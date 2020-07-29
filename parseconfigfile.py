@@ -29,10 +29,10 @@ def parseConfigFile(filePath):
     config = {}
     with open(filePath, 'r') as configFile:
         for line in configFile:
-            tokens = line.split('=')  # expect 2 tokens if not comment
-            if not line or line[0] == '#' or len(tokens) != 2:
+            equalsPos = line.find('=')
+            fieldName = line[:equalsPos].lstrip().rstrip()
+            fieldVal = line[equalsPos+1:].lstrip().rstrip()
+            if equalsPos == -1 or not fieldName or not fieldVal:
                 continue
-            fieldName = tokens[0].lstrip(' \t').rstrip()
-            fieldVal = tokens[1].lstrip(' \t').rstrip()
             config[fieldName] = convertValue(fieldVal)
     return config
